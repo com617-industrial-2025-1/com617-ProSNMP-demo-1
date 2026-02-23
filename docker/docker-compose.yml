@@ -4,6 +4,17 @@ volumes:
   data-grafana: {}
   data-promsnmp: {}
 
+networks:
+  N000:
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24
+  N001:
+    ipam:
+      config:
+        - subnet: 172.20.2.0/24
+
+
 services:
   prometheus:
     image: quay.io/prometheus/prometheus:latest
@@ -14,7 +25,7 @@ services:
       - data-prometheus:/prometheus
     stop_grace_period: 30s
     ports:
-      - "9090:9090"
+      - "9090:9090/tcp"
 
   promsnmp:
     image: ghcr.io/pbrane/promsnmp-metrics:latest
@@ -43,13 +54,13 @@ services:
       CACHE_EXP_MILLIS: 300000
       CACHE_ENTRY_CNT: 10000
       DISCOVERY_CRON: "0 0 2 * * *"
-      DISCOVERY_ON_START: false
+      DISCOVERY_ON_START: true
       COLLECTION_INTERVAL: 30000
       SERVER_PORT: 8080
     volumes:
-      - data-promsnmp:/app/data
+      - ./data/data-promsnmp/promsnmp:/app/data
     ports:
-      - "8081:8080"
+      - "8081:8080/tcp"
 
   grafana:
     image: docker.io/grafana/grafana-oss:latest
@@ -61,4 +72,28 @@ services:
       - ./container-fs/grafana/provisioning:/etc/grafana/provisioning/
       - ../src/main/resources/dashboards:/etc/grafana/provisioning/dashboards/json
     ports:
-      - "3001:3000"
+      - "3001:3000/tcp"
+
+  netsnmp_1_1:
+    image: polinux/snmpd
+    container_name: netsnmp_1_1
+    hostname: netsnmp_1_1
+    volumes:
+      - ./container-fs/snmp/snmpd.conf:/etc/snmp/snmpd.conf
+    ports:
+      - "11161:161/udp"
+    networks:
+      N000:
+        ipv4_address: 172.20.0.101
+
+  netsnmp_1_2:
+    image: polinux/snmpd
+    container_name: netsnmp_1_2
+    hostname: netsnmp_1_2
+    volumes:
+      - ./container-fs/snmp/snmpd.conf:/etc/snmp/snmpd.conf
+    ports:
+      - "11261:161/udp"
+    networks:
+      N000:
+        ipv4_address: 172.20.0.102
