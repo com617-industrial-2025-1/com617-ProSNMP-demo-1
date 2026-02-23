@@ -26,6 +26,8 @@ services:
     stop_grace_period: 30s
     ports:
       - "9090:9090/tcp"
+    networks:
+      N000:
 
   promsnmp:
     image: ghcr.io/pbrane/promsnmp-metrics:latest
@@ -61,6 +63,9 @@ services:
       - ./data/data-promsnmp/promsnmp:/app/data
     ports:
       - "8081:8080/tcp"
+    networks:
+      N000:
+        ipv4_address: 172.20.0.2
 
   grafana:
     image: docker.io/grafana/grafana-oss:latest
@@ -73,6 +78,7 @@ services:
       - ../src/main/resources/dashboards:/etc/grafana/provisioning/dashboards/json
     ports:
       - "3001:3000/tcp"
+
 
   netsnmp_1_1:
     image: polinux/snmpd
