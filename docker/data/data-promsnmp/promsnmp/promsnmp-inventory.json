@@ -1,16 +1,18 @@
-[
-  {
-    "name": "netsnmp_1_1",
-    "host": "172.20.0.101",
-    "port": 161,
-    "community": "public",
-    "version": "2c"
-  },
-  {
-    "name": "netsnmp_1_2",
-    "host": "172.20.0.102",
-    "port": 161,
-    "community": "public",
-    "version": "2c"
-  }
-]
+{
+  "devices": [
+    {
+      "name": "netsnmp_1_1",
+      "host": "172.20.0.101",
+      "port": 161,
+      "version": "2c",
+      "community": "public"
+    },
+    {
+      "name": "netsnmp_1_2",
+      "host": "172.20.0.102",
+      "port": 161,
+      "version": "2c",
+      "community": "public"
+    }
+  ]
+}

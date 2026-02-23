@@ -45,7 +45,7 @@ services:
       PROM_METRICS_API: snmp
       METRICS_REPO_API: snmp
       PROM_INV_FILE: /app/data/promsnmp-inventory.json
-      PROM_ENCRYPT_KEY: 0123456789ABCDEF
+      PROM_ENCRYPT_KEY: Rkefv9+bd1Yawv7+hKhV8w==
       PROM_TENANT_ID: 0123456789
       PROM_SITE_ID: 0123456789
       PROM_SITE_LABEL: Chicago POP
@@ -66,7 +66,7 @@ services:
       - "8081:8080/tcp"
     networks:
       N000:
-        ipv4_address: 172.20.0.2
+        ipv4_address: 172.20.0.4
 
   grafana:
     image: docker.io/grafana/grafana-oss:latest
@@ -79,6 +79,9 @@ services:
       - ../src/main/resources/dashboards:/etc/grafana/provisioning/dashboards/json
     ports:
       - "3001:3000/tcp"
+    networks:
+      N000:
+        ipv4_address: 172.20.0.5
 
 
   netsnmp_1_1:
