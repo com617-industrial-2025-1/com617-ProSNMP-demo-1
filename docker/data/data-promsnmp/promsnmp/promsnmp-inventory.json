@@ -1,18 +1,22 @@
 {
-  "devices": [
-    {
-      "name": "netsnmp_1_1",
-      "host": "172.20.0.101",
-      "port": 161,
-      "version": "2c",
-      "community": "public"
-    },
-    {
-      "name": "netsnmp_1_2",
-      "host": "172.20.0.102",
-      "port": 161,
-      "version": "2c",
-      "community": "public"
-    }
-  ]
+  "devices" : [ {
+    "id" : "1ffe51e2-8daa-45a2-80e8-4b0fe7b1cc9b",
+    "sysName" : null,
+    "sysDescr" : null,
+    "sysContact" : null,
+    "sysLocation" : null,
+    "discoveredAt" : "2026-02-23T21:30:58.374717566Z",
+    "agents" : [ ],
+    "primaryAgent" : null
+  }, {
+    "id" : "b02f09b5-8d7c-4c6f-b9c9-4498deb22142",
+    "sysName" : null,
+    "sysDescr" : null,
+    "sysContact" : null,
+    "sysLocation" : null,
+    "discoveredAt" : "2026-02-23T21:30:58.375004256Z",
+    "agents" : [ ],
+    "primaryAgent" : null
+  } ],
+  "discoverySeeds" : [ ]
 }
