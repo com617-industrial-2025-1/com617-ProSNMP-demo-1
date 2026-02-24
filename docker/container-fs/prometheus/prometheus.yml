@@ -21,8 +21,6 @@ scrape_configs:
     metrics_path: /snmp
     scrape_interval: 30s
     scrape_timeout: 30s
-    static_configs:
-
     http_sd_configs:
       - url: http://promsnmp:8080/targets
     relabel_configs:

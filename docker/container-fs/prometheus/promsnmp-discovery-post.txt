@@ -11,3 +11,6 @@ Method: POST
 URL: localhost:8081/promsnmp/discovery
 
 as JSON text
+
+
+use RESTer Firefox
