@@ -1,0 +1,5 @@
+To build and deploy a Prometheus / Grafana / PromSNMP artifact to be demonstrated in an environment utilising docker-compose.
+Visualisation of network bandwidth using Grafana with the Prometheus and PromSNMP data source. 
+Create a monitored network topology within a container lab. 
+Comprehensive Project documentation accompanied by a video that explains the deployment of PromSNMP. 
+Evaluate PromSNMP and compare with “snmp-exporter” considering a variety of which considers a variety of deployment use cases. 
