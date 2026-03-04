@@ -9,11 +9,6 @@ networks:
     ipam:
       config:
         - subnet: 172.20.0.0/24
-  N001:
-    ipam:
-      config:
-        - subnet: 172.20.2.0/24
-
 
 services:
   prometheus:
@@ -82,28 +77,3 @@ services:
     networks:
       N000:
         ipv4_address: 172.20.0.5
-
-
-  netsnmp_1_1:
-    image: polinux/snmpd
-    container_name: netsnmp_1_1
-    hostname: netsnmp_1_1
-    volumes:
-      - ./container-fs/snmp/snmpd.conf:/etc/snmp/snmpd.conf
-    ports:
-      - "11161:161/udp"
-    networks:
-      N000:
-        ipv4_address: 172.20.0.101
-
-  netsnmp_1_2:
-    image: polinux/snmpd
-    container_name: netsnmp_1_2
-    hostname: netsnmp_1_2
-    volumes:
-      - ./container-fs/snmp/snmpd.conf:/etc/snmp/snmpd.conf
-    ports:
-      - "11261:161/udp"
-    networks:
-      N000:
-        ipv4_address: 172.20.0.102

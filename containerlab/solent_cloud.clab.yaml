@@ -1,0 +1,102 @@
+name: ixp-te-lab
+
+mgmt:
+  network: docker_N000
+topology:
+  kinds:
+    nokia_srlinux:
+      image: ghcr.io/nokia/srlinux:24.10
+  nodes:
+    core_router_1:
+      kind: nokia_srlinux
+      startup-config: ./configs/core_router_1.cli
+    core_router_2:
+      kind: nokia_srlinux
+      startup-config: ./configs/core_router_2.cli
+    dc_router_1:
+      kind: nokia_srlinux
+      startup-config: ./configs/dc_router_1.cli
+    dc_router_2:
+      kind: nokia_srlinux
+      startup-config: ./configs/dc_router_2.cli
+    edge_router_1:
+      kind: nokia_srlinux
+      startup-config: ./configs/edge_router_1.cli
+    edge_router_2:
+      kind: nokia_srlinux
+      startup-config: ./configs/edge_router_2.cli
+    isp_bt:
+      kind: nokia_srlinux
+      startup-config: ./configs/isp_bt.cli
+    isp_vmo2:
+      kind: nokia_srlinux
+      startup-config: ./configs/isp_vmo2.cli
+
+    ixp_lon:
+      kind: linux
+      image: frrouting/frr:latest
+      binds:
+        - ./configs/ixp_lon/daemons:/etc/frr/daemons
+        - ./configs/ixp_lon/frr.conf:/etc/frr/frr.conf
+      exec:
+        - sleep 3
+        - sh -c 'ip link add br0 type bridge || true'
+        - ip link set eth1 master br0
+        - ip link set eth2 master br0
+        - ip link set br0 up
+        - sh -c 'ip addr add 185.1.1.254/24 dev br0 || true'
+
+    ixp_man:
+      kind: linux
+      image: frrouting/frr:latest
+      binds:
+        - ./configs/ixp_man/daemons:/etc/frr/daemons
+        - ./configs/ixp_man/frr.conf:/etc/frr/frr.conf
+      exec:
+        - sleep 3
+        - sh -c 'ip link add br0 type bridge || true'
+        - ip link set eth1 master br0
+        - ip link set eth2 master br0
+        - ip link set br0 up
+        - sh -c 'ip addr add 185.2.2.254/24 dev br0 || true'
+    dc_server:
+      kind: linux
+      image: ghcr.io/hellt/network-multitool
+      exec:
+        - ip addr add 172.16.1.10/24 dev eth1
+        - ip addr add 172.16.2.10/24 dev eth2
+        - ip route replace default via 172.16.1.1
+    internet_client:
+      kind: linux
+      image: frrouting/frr:latest
+      binds:
+        - ./configs/internet_client/daemons:/etc/frr/daemons
+        - ./configs/internet_client/frr.conf:/etc/frr/frr.conf
+      exec:
+        - sleep 3
+        - ip addr add 8.8.8.2/24 dev eth1        # ISP BT subnet
+        - ip addr add 9.9.9.2/24 dev eth2        # ISP VMO2 subnet
+        - ip addr add 185.1.1.100/24 dev eth3    # IXP-LON subnet
+        - ip addr add 185.2.2.100/24 dev eth4    # IXP-MAN subnet
+  links:
+    - endpoints: ["core_router_1:e1-1", "core_router_2:e1-1"]
+    - endpoints: ["core_router_1:e1-2", "dc_router_1:e1-1"]
+    - endpoints: ["core_router_1:e1-3", "dc_router_2:e1-1"]
+    - endpoints: ["core_router_2:e1-2", "dc_router_1:e1-2"]
+    - endpoints: ["core_router_2:e1-3", "dc_router_2:e1-2"]
+    - endpoints: ["edge_router_1:e1-1", "core_router_1:e1-4"]
+    - endpoints: ["edge_router_1:e1-2", "core_router_2:e1-4"]
+    - endpoints: ["edge_router_2:e1-1", "core_router_1:e1-5"]
+    - endpoints: ["edge_router_2:e1-2", "core_router_2:e1-5"]
+    - endpoints: ["edge_router_1:e1-3", "isp_bt:e1-1"]
+    - endpoints: ["edge_router_2:e1-3", "isp_vmo2:e1-1"]
+    - endpoints: ["edge_router_1:e1-4", "ixp_lon:eth1"]
+    - endpoints: ["edge_router_2:e1-4", "ixp_lon:eth2"]
+    - endpoints: ["edge_router_1:e1-5", "ixp_man:eth1"]
+    - endpoints: ["edge_router_2:e1-5", "ixp_man:eth2"]
+    - endpoints: ["dc_router_1:e1-3", "dc_server:eth1"]
+    - endpoints: ["dc_router_2:e1-3", "dc_server:eth2"]
+    - endpoints: ["isp_bt:e1-2", "internet_client:eth1"]
+    - endpoints: ["isp_vmo2:e1-2", "internet_client:eth2"]
+    - endpoints: ["ixp_lon:eth3", "internet_client:eth3"]
+    - endpoints: ["ixp_man:eth3", "internet_client:eth4"]
