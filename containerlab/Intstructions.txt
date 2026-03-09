@@ -7,7 +7,7 @@ mkdir -p ~/docker/container-fs/snmp/
 
 cp /mnt/c/Users/mroak/com617-ProSNMP-demo-1/docker/container-fs/snmp/snmpd.conf ~/docker/container-fs/snmp/
 
-cd ~/containerlab-demo
+cd ~/containerlab-demo (always run containerlab from here on wsl cmd for saved configurations)
 
 containerlab deploy -t solent_cloud.clab.yaml
 
@@ -19,4 +19,5 @@ docker exec -it clab-ixp-te-lab-core_router_1 sr_cli
 #Check using snmp walk in the Promsnmp container:
 docker exec -it docker-promsnmp-1 /bin/sh
 snmpwalk -v2c -c public 172.20.0.9 1.3.6.1.2.1.1
+
 
