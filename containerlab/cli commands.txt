@@ -1,0 +1,20 @@
+enter candidate
+
+delete /system snmp network-instance default
+
+/system snmp network-instance mgmt
+    admin-state enable
+    transport udp
+    listen-address [ 0.0.0.0 ]
+
+(exit to root)
+
+/system snmp access-group read-only
+    admin-state enable
+    security-level no-auth-no-priv
+    community-entry comm1
+        community public
+
+(exit to root)
+
+commit save
