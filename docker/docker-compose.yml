@@ -80,13 +80,15 @@ services:
 
 
   containerlab:
-    image: ghcr.io/srl-labs/containerlab:0.74.0
+    image: alpine:latest  
     container_name: clab
     privileged: true
     network_mode: host
-    pull_policy: never
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/bin/containerlab:/usr/bin/containerlab 
+      - /lib/x86_64-linux-gnu:/lib/x86_64-linux-gnu    
+      - /usr/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu
       - ./:/workspace
     working_dir: /workspace
     command: >
