@@ -80,7 +80,7 @@ services:
 
 
   containerlab:
-    image: ghcr.io/srl-labs/containerlab:latest
+    image: ghcr.io/srl-labs/containerlab:0.74.0
     container_name: clab
     privileged: true
     network_mode: host
