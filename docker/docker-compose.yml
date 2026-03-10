@@ -79,17 +79,16 @@ services:
         ipv4_address: 172.20.0.5
 
 
-  containerlab:
-    image: alpine:latest  
-    container_name: clab
+  clab-manager:
+    image: ghcr.io/srl-labs/containerlab:latest
+    container_name: clab-manager
     privileged: true
-    network_mode: host
+    network_mode: host 
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /usr/bin/containerlab:/usr/bin/containerlab 
-      - /lib/x86_64-linux-gnu:/lib/x86_64-linux-gnu    
-      - /usr/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu
-      - ./:/workspace
-    working_dir: /workspace
-    command: >
-      sh -c "containerlab deploy -t containerlab/solent_cloud.clab.yaml && tail -f /dev/null"
+      - /var/run/netns:/var/run/netns
+      - ../containerlab:/containerlab
+      - ../entrypoint.sh:/entrypoint.sh
+    depends_on:
+      - promsnmp
+    entrypoint: ["/bin/sh", "/entrypoint.sh"]
