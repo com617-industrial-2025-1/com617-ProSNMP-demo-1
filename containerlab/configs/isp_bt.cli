@@ -13,4 +13,11 @@ set / network-instance default protocols bgp group EBGP peer-as 65000 export-pol
 set / network-instance default protocols bgp neighbor 10.1.1.2 peer-group EBGP
 set / network-instance default protocols bgp group CLIENT peer-as 65200 export-policy [ ACCEPT-ALL ] import-policy [ ACCEPT-ALL ]
 set / network-instance default protocols bgp neighbor 8.8.8.2 peer-group CLIENT
+delete / system snmp
+set / system snmp network-instance mgmt admin-state enable
+set / system snmp network-instance mgmt transport udp
+set / system snmp network-instance mgmt listen-address [ 0.0.0.0 ]
+set / system snmp access-group read-only admin-state enable
+set / system snmp access-group read-only security-level no-auth-no-priv
+set / system snmp access-group read-only community-entry comm1 community public
 commit save

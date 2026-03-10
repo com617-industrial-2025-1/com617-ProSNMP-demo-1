@@ -22,4 +22,11 @@ set / network-instance default protocols bgp autonomous-system 65000 router-id 3
 set / network-instance default protocols bgp group IBGP peer-as 65000 export-policy [ ACCEPT-ALL ] import-policy [ ACCEPT-ALL ] transport local-address 3.3.3.3
 set / network-instance default protocols bgp neighbor 5.5.5.5 peer-group IBGP
 set / network-instance default protocols bgp neighbor 6.6.6.6 peer-group IBGP
+delete / system snmp
+set / system snmp network-instance mgmt admin-state enable
+set / system snmp network-instance mgmt transport udp
+set / system snmp network-instance mgmt listen-address [ 0.0.0.0 ]
+set / system snmp access-group read-only admin-state enable
+set / system snmp access-group read-only security-level no-auth-no-priv
+set / system snmp access-group read-only community-entry comm1 community public
 commit save
