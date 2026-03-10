@@ -84,6 +84,7 @@ services:
     container_name: clab
     privileged: true
     network_mode: host
+    pull_policy: never
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./:/workspace
