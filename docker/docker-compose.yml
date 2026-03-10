@@ -77,3 +77,16 @@ services:
     networks:
       N000:
         ipv4_address: 172.20.0.5
+
+
+  containerlab:
+    image: ghcr.io/srl-labs/containerlab:latest
+    container_name: clab
+    privileged: true
+    network_mode: host
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./:/workspace
+    working_dir: /workspace
+    command: >
+      sh -c "containerlab deploy -t containerlab/solent_cloud.clab.yaml && tail -f /dev/null"
