@@ -1,0 +1,51 @@
+name: ixp-lab
+
+mgmt:
+  network: docker_N000
+  ipv4-subnet: 172.20.0.0/24
+
+topology:
+  kinds:
+    nokia_srlinux:
+      image: ghcr.io/nokia/srlinux:24.10
+      type: ixr-d2 
+    linux:
+      image: frrouting/frr:latest
+
+  nodes:
+    core_router_1:
+      kind: nokia_srlinux
+      mgmt-ipv4: 172.20.0.10
+      startup-config: ./configs/core_router_1.cli
+
+    edge_router_1:
+      kind: nokia_srlinux
+      mgmt-ipv4: 172.20.0.11
+      startup-config: ./configs/edge_router_1.cli
+
+    dc_router_1:
+      kind: nokia_srlinux
+      mgmt-ipv4: 172.20.0.12
+      startup-config: ./configs/dc_router_1.cli
+
+    ixp_lon:
+      kind: linux
+      mgmt-ipv4: 172.20.0.13
+      binds:
+        - ./configs/ixp_lon/daemons:/etc/frr/daemons
+        - ./configs/ixp_lon/frr.conf:/etc/frr/frr.conf
+      exec:
+        - apk add net-snmp
+
+    internet_client:
+      kind: linux
+      mgmt-ipv4: 172.20.0.14
+      image: ghcr.io/hellt/network-multitool
+      exec:
+        - apk add net-snmp
+
+  links:
+    - endpoints: ["core_router_1:e1-1", "edge_router_1:e1-1"]
+    - endpoints: ["core_router_1:e1-2", "dc_router_1:e1-1"]
+    - endpoints: ["edge_router_1:e1-2", "ixp_lon:eth1"]
+    - endpoints: ["ixp_lon:eth2", "internet_client:eth1"]
