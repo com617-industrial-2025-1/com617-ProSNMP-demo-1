@@ -77,18 +77,3 @@ services:
     networks:
       N000:
         ipv4_address: 172.20.0.5
-
-
-  clab-manager:
-    image: ghcr.io/srl-labs/containerlab:latest
-    container_name: clab-manager
-    privileged: true
-    network_mode: host 
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /var/run/netns:/var/run/netns
-      - ../containerlab:/containerlab
-      - ../entrypoint.sh:/entrypoint.sh
-    depends_on:
-      - promsnmp
-    entrypoint: ["/bin/sh", "/entrypoint.sh"]
