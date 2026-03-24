@@ -1,0 +1,50 @@
+For Ubuntu:
+
+1. Update the system
+sudo apt update
+sudo apt upgrade -y
+
+2. Install basic dependencies
+sudo apt install -y curl ca-certificates gnupg lsb-release
+
+3. Install Docker Engine
+sudo install -m 0755 -d /etc/apt/keyrings
+
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg \
+ | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+
+echo \
+ "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] \
+ https://download.docker.com/linux/ubuntu \
+ $(lsb_release -cs) stable" \
+ | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+sudo apt update
+sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+docker --version
+docker compose version
+
+4. Install Containerlab
+bash -c "$(curl -sL https://get.containerlab.dev)"
+containerlab version
+
+5. Clone the Repo and change branch
+git clone https://github.com/com617-industrial-2025-1/com617-ProSNMP-demo-1.git
+Once in repo folder:
+git checkout feature/docker-stack
+
+6. Add vboxuser to sudoers (if not root)
+su -
+sudo visudo
+Add into file: vboxuser ALL=(ALL:ALL) ALL
+
+7. Ensure script can be executed (execute using ./(script name) in the docker folder)
+chmod +x deploy_all.sh
+chmod +x destroy_all.sh
+
+8. Check prometheus targets
+go to localhost:9090 in your browser
+
+9.Check Grafana dashboards
+go to localhost:3001 in your browser
+USERNAME: admin PASSWORD: admin
