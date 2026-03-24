@@ -1,6 +1,6 @@
 #!/bin/bash
 
-LAB_FILE="../containerlab/solent_cloud.clab.yaml"
+LAB_FILE="../containerlab/containerlab.yaml"
 API_URL="http://localhost:8081/promsnmp/discovery"
 
 echo "--- Step 1/4: Starting Docker Compose Services ---"
