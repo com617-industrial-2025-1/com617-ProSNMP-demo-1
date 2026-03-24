@@ -1,6 +1,6 @@
 #!/bin/bash
 
-LAB_FILE="../containerlab/solent_cloud.clab.yaml"
+LAB_FILE="../containerlab/containerlab.yaml"
 
 echo "--- Step 1/3: Destroying Network Topology ---"
 sudo containerlab destroy -t $LAB_FILE
